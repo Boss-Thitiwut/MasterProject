@@ -7,3 +7,5 @@ const RegisterSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.models.Register || mongoose.model("Register", RegisterSchema);
+
+
