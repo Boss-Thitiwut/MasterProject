@@ -1,37 +1,34 @@
 import { connectDB } from "../../../lib/mongodb";
-import { QuestionSet } from "../../../models";
+import QuestionSet from "../../../models/QuestionDB"; // Ensure correct import
 
 export async function DELETE(req) {
     await connectDB();
 
     try {
-        const { setId, questionIndex } = await req.json();
+        const { setId } = await req.json(); // We only need setId to delete the set
 
-        if (!setId || questionIndex === undefined) {
+        if (!setId) {
             return new Response(
-                JSON.stringify({ success: false, error: "Set ID and question index are required" }),
+                JSON.stringify({ success: false, error: "Set ID is required" }),
                 { status: 400, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        const questionSet = await QuestionSet.findById(setId);
+        const deletedSet = await QuestionSet.findByIdAndDelete(setId);
 
-        if (!questionSet) {
+        if (!deletedSet) {
             return new Response(
                 JSON.stringify({ success: false, error: "Question set not found" }),
                 { status: 404, headers: { "Content-Type": "application/json" } }
             );
         }
 
-        questionSet.questions.splice(questionIndex, 1);
-        await questionSet.save();
-
         return new Response(
-            JSON.stringify({ success: true, message: "Question deleted", data: questionSet }),
+            JSON.stringify({ success: true, message: "Question set deleted", data: deletedSet }),
             { status: 200, headers: { "Content-Type": "application/json" } }
         );
     } catch (error) {
-        console.error("Error deleting question:", error);
+        console.error("Error deleting question set:", error);
         return new Response(
             JSON.stringify({ success: false, error: "Server error" }),
             { status: 500, headers: { "Content-Type": "application/json" } }

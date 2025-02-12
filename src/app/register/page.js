@@ -5,14 +5,25 @@ import { useState } from "react";
 export default function RegisterPage() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState(""); // New state for role
     const [errorMessage, setErrorMessage] = useState("");
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+    const roles = [
+        { value: "Product Owner", label: "เจ้าของผลิตภัณฑ์ (Product Owner)" },
+        { value: "Requirements Engineer", label: "วิศวกรรมความต้องการ (Requirements Engineer)" },
+        { value: "Architectural Designer", label: "นักออกแบบสถาปัตยกรรม (Architectural Designer)" },
+        { value: "Backend Developer", label: "นักพัฒนาส่วนหลังระบบ (Backend Developer)" },
+        { value: "Frontend Developer", label: "นักพัฒนาส่วนหน้าระบบ (Frontend Developer)" },
+        { value: "DevOps", label: "วิศวกรรมการพัฒนาระบบและปฏิบัติการ (DevOps)" },
+        { value: "Quality Engineer", label: "วิศวกรรมคุณภาพ (Quality Engineer)" },
+    ];
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        if (!username || !password) {
-            setErrorMessage("Both Username and Password are required.");
+        if (!username || !password || !role) {
+            setErrorMessage("All fields are required.");
             setShowSuccessMessage(false);
             return;
         }
@@ -21,7 +32,7 @@ export default function RegisterPage() {
             const response = await fetch("/api/api-auth-register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ username, password, role }),
             });
 
             const data = await response.json();
@@ -31,6 +42,7 @@ export default function RegisterPage() {
                 setErrorMessage("");
                 setUsername("");
                 setPassword("");
+                setRole("");
             } else {
                 setErrorMessage(data.error || "Something went wrong.");
                 setShowSuccessMessage(false);
@@ -66,6 +78,21 @@ export default function RegisterPage() {
                             placeholder="Enter your password"
                         />
                     </div>
+                    <div className="form-group">
+                        <label htmlFor="role">Role:</label>
+                        <select
+                            id="role"
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                        >
+                            <option value="">Select a Role</option>
+                            {roles.map((r) => (
+                                <option key={r.value} value={r.value}>
+                                    {r.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
                     {errorMessage && <p className="error">{errorMessage}</p>}
                     <button type="submit" className="register-button">Register</button>
                 </form>
@@ -99,11 +126,6 @@ export default function RegisterPage() {
                     text-align: center;
                     width: 400px;
                 }
-                h1 {
-                    font-size: 24px;
-                    margin-bottom: 20px;
-                    color: #333;
-                }
                 .form-group {
                     margin-bottom: 20px;
                     text-align: left;
@@ -111,21 +133,16 @@ export default function RegisterPage() {
                 .form-group label {
                     font-size: 14px;
                     font-weight: bold;
-                    margin-bottom: 5px;
                     display: block;
                     color: #555;
                 }
-                .form-group input {
+                .form-group input,
+                .form-group select {
                     width: 100%;
                     padding: 12px;
                     border: 1px solid #ccc;
                     border-radius: 5px;
                     font-size: 14px;
-                }
-                .error {
-                    color: red;
-                    font-size: 12px;
-                    margin-top: 10px;
                 }
                 .register-button {
                     background-color: #007aff;
@@ -135,30 +152,7 @@ export default function RegisterPage() {
                     border-radius: 25px;
                     cursor: pointer;
                     font-size: 14px;
-                    font-weight: bold;
                     width: 100%;
-                    transition: background-color 0.3s;
-                }
-                .register-button:hover {
-                    background-color: #005bb5;
-                }
-                .success-popup {
-                    background: #d4edda;
-                    color: #155724;
-                    padding: 15px;
-                    border: 1px solid #c3e6cb;
-                    border-radius: 5px;
-                    margin-top: 20px;
-                    position: relative;
-                    display: inline-block;
-                }
-                .close-popup {
-                    background: transparent;
-                    border: none;
-                    color: #155724;
-                    font-weight: bold;
-                    margin-top: 10px;
-                    cursor: pointer;
                 }
             `}</style>
         </div>

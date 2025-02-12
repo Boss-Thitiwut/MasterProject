@@ -5,16 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-    const [isAdmin, setIsAdmin] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const router = useRouter();
-
-    const handleUserTypeChange = (type) => {
-        setIsAdmin(type === "admin");
-        setError("");
-    };
 
     const handleLogin = async () => {
         if (!username.trim() || !password.trim()) {
@@ -40,9 +34,9 @@ export default function HomePage() {
 
                 // Redirect user based on role
                 if (data.role === "admin") {
-                    router.push("/dashboard");
-                } else if (data.role === "user") {
-                    router.push("/questions");
+                    router.push("/dashboard"); // Admin goes to Dashboard
+                } else {
+                    router.push("/questions"); // All other roles go to Questions
                 }
             } else {
                 setError(data.error || "Invalid credentials.");
@@ -56,21 +50,7 @@ export default function HomePage() {
         <div className="homepage-container">
             <div className="login-card">
                 <h1 className="title">Login</h1>
-                <p className="subtitle">Select your role and login to continue</p>
-                <div className="user-type-toggle">
-                    <button
-                        className={`toggle-button ${!isAdmin ? "active" : ""}`}
-                        onClick={() => handleUserTypeChange("user")}
-                    >
-                        User Login
-                    </button>
-                    <button
-                        className={`toggle-button ${isAdmin ? "active" : ""}`}
-                        onClick={() => handleUserTypeChange("admin")}
-                    >
-                        Admin Login
-                    </button>
-                </div>
+                <p className="subtitle">Enter your credentials to login</p>
 
                 <div className="input-container">
                     <div className="input-field">
@@ -94,10 +74,11 @@ export default function HomePage() {
                         />
                     </div>
                 </div>
+
                 {error && <p className="error-message">{error}</p>}
 
                 <button className="login-button" onClick={handleLogin}>
-                    {isAdmin ? "Login as Admin" : "Login as User"}
+                    Login
                 </button>
 
                 <div className="register-section">

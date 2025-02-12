@@ -46,7 +46,13 @@ export default function RootLayout({ children }) {
                     { label: "Admin", href: "/admin" },
                     { label: "Configuration", href: "/users" },
                 ];
-            case "user":
+            case "Product Owner":
+            case "Requirements Engineer":
+            case "Architectural Designer":
+            case "Backend Developer":
+            case "Frontend Developer":
+            case "DevOps":
+            case "Quality Engineer":
                 return [
                     { label: "Home", href: "/" },
                     { label: "Questions", href: "/questions" },

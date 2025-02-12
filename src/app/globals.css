@@ -604,3 +604,11 @@ input {
   text-decoration: underline;
 }
 
+tbody tr:hover {
+  background-color: #f8f8f8;
+}
+
+button {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+

@@ -5,9 +5,15 @@ export async function POST(req) {
     await connectDB();
 
     try {
-        const { username, password, role = "user" } = await req.json();
+        const { username, password, role } = await req.json();
 
-        // Check if the user already exists
+        if (!role) {
+            return new Response(
+                JSON.stringify({ success: false, error: "Role is required" }),
+                { status: 400, headers: { "Content-Type": "application/json" } }
+            );
+        }
+
         const existingUser = await Register.findOne({ username });
         if (existingUser) {
             return new Response(
@@ -16,10 +22,9 @@ export async function POST(req) {
             );
         }
 
-        // Create the new user without encrypting the password
         const newUser = new Register({
             username,
-            password, // Storing the password as plain text (not secure)
+            password, // (Consider encrypting before saving)
             role,
         });
         await newUser.save();
