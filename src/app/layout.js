@@ -3,48 +3,42 @@
 import "./globals.css";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import styles from "./layout.module.css"; // NEW
 
 export default function RootLayout({ children }) {
-    const [role, setRole] = useState("non-user"); // Default role is non-user
+    const [role, setRole] = useState("non-user");
     const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
-        // Function to fetch role from localStorage
         const fetchRole = () => {
             const storedRole = localStorage.getItem("role") || "non-user";
             setRole(storedRole);
         };
-
-        // Add listener for roleChange event
         window.addEventListener("roleChange", fetchRole);
-
-        // Initial role fetch
         fetchRole();
-
-        // Cleanup listener on component unmount
         return () => {
             window.removeEventListener("roleChange", fetchRole);
         };
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem("role"); // Remove role from localStorage
-        setRole("non-user"); // Reset state to non-user
-        router.push("/"); // Redirect to home page
-        window.dispatchEvent(new Event("roleChange")); // Trigger roleChange event
+        localStorage.removeItem("role");
+        setRole("non-user");
+        router.push("/");
+        window.dispatchEvent(new Event("roleChange"));
     };
 
-    // Generate menu items dynamically based on the role
     const getMenuItems = () => {
         switch (role) {
             case "admin":
                 return [
-                    { label: "Home", href: "/" },
+                  //  { label: "Home", href: "/" },
                     { label: "Dashboard", href: "/dashboard" },
-                    { label: "Questions", href: "/questions" },
-                    { label: "Admin", href: "/admin" },
-                    { label: "Configuration", href: "/users" },
+                    { label: "Questions", href: "/questions" }
+                 //   { label: "Admin", href: "/admin" },
+                  //  { label: "User Survey", href: "/users" },
                 ];
             case "Product Owner":
             case "Requirements Engineer":
@@ -54,8 +48,7 @@ export default function RootLayout({ children }) {
             case "DevOps":
             case "Quality Engineer":
                 return [
-                    { label: "Home", href: "/" },
-                    { label: "Questions", href: "/questions" },
+                    { label: "User Survey", href: "/users" },
                 ];
             default:
                 return [{ label: "Home", href: "/" }];
@@ -63,31 +56,33 @@ export default function RootLayout({ children }) {
     };
 
     const menuItems = getMenuItems();
+    const isAuthPage = pathname === "/" || pathname === "/register";
 
     return (
         <html lang="en">
-            <body>
-                <div className="layout">
-                    {/* Sidebar */}
-                    <aside className="sidebar">
-                        <h2 className="sidebar-title">Master-Project</h2>
-                        <nav className="menu">
-                            {menuItems.map((item) => (
-                                <Link key={item.href} href={item.href} className="menu-item">
-                                    {item.label}
-                                </Link>
-                            ))}
-                            {role !== "non-user" && (
-                                <button onClick={handleLogout} className="logout-button">
-                                    Logout
-                                </button>
-                            )}
-                        </nav>
-                    </aside>
-
-                    {/* Main Content */}
-                    <main className="content">{children}</main>
-                </div>
+            <body className={styles.gradient}>
+                {isAuthPage ? (
+                    <>{children}</>
+                ) : (
+                    <div className={styles.appLayout}>
+                        <aside className={styles.sidebar}>
+                            <h2 className={styles.title}>Master-Project</h2>
+                            <nav className={styles.nav}>
+                                {menuItems.map((item) => (
+                                    <Link key={item.href} href={item.href} className={styles.link}>
+                                        {item.label}
+                                    </Link>
+                                ))}
+                                {role !== "non-user" && (
+                                    <button onClick={handleLogout} className={styles.logout}>
+                                        Logout
+                                    </button>
+                                )}
+                            </nav>
+                        </aside>
+                        <main className={styles.main}>{children}</main>
+                    </div>
+                )}
             </body>
         </html>
     );

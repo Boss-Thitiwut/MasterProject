@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f094fb, #f5576c, #4b2c89);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  font-family: 'Poppins', sans-serif;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.card {
+  background: #fff;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  padding: 2rem 3rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #1f2937;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.75rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  background: #f9fafb;
+  color: #111827;
+  min-width: 200px;
+}
+
+.primaryButton {
+  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.secondaryButton {
+  background: linear-gradient(to right, #3b82f6, #60a5fa);
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.uploadButton {
+  background: linear-gradient(to right, #8b5cf6, #6366f1);
+  padding: 0.75rem 1rem;
+  color: white;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.previewBlock {
+  margin-top: 1rem;
+}
+
+.previewList {
+  background: #f3f4f6;
+  color: #111827;
+  padding: 1rem;
+  border-radius: 12px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  list-style-type: disc;
+  list-style-position: inside;
+}
+
+.previewList li {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.message {
+  margin-top: 1rem;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.setList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.setItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f3f4f6;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  color: #111827;
+}
+
+.deleteButton {
+  background: #ef4444;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+
+.inputLabel {
+  font-weight: 600;
+  color: #111827; /* blackish text */
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.scaleGroup {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.radioLabel {
+  font-weight: 500;
+  color: #111827; /* black text for values 1–5 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.emotionScale {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.emotionButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.emotionButton:hover {
+  transform: scale(1.2);
+}
